@@ -21,7 +21,7 @@ RUN dotnet restore cartservice.csproj \
 COPY . .
 RUN dotnet publish cartservice.csproj \
     -p:PublishSingleFile=true \
-    -r linux-x64 \
+    -r linux-arm64 \
     --self-contained true \
     -p:PublishTrimmed=true \
     -p:TrimMode=full \
