@@ -19,7 +19,8 @@ FROM base AS builder
 RUN apt-get -qq update \
     && apt-get install -y --no-install-recommends \
         wget g++ \
-    && rm -rf /var/lib/apt/lists/*
+    && rm -rf /var/lib/apt/lists/* 
+
 
 # get packages
 COPY requirements.txt .
@@ -31,6 +32,9 @@ ENV PYTHONUNBUFFERED=1
 # Enable Profiler
 ENV ENABLE_PROFILER=1
 
+RUN apt-get update && apt-get upgrade && apt-get install -y curl
+
+
 WORKDIR /email_server
 
 # Grab packages from builder
@@ -40,4 +44,5 @@ COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
 COPY . .
 
 EXPOSE 8080
+EXPOSE 8000
 ENTRYPOINT [ "python", "email_server.py" ]

@@ -70,6 +70,7 @@ spec:
         image: {{ .Values.images.repository }}/{{ .Values.emailService.name }}:{{ .Values.images.tag | default .Chart.AppVersion }}
         ports:
         - containerPort: 8080
+        - containerPort: 8000
         env:
         - name: PORT
           value: "8080"

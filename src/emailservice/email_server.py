@@ -41,6 +41,11 @@ import googlecloudprofiler
 from logger import getJSONLogger
 logger = getJSONLogger('emailservice-server')
 
+from prometheus_client import start_http_server, Counter
+c = Counter('my_failures', 'Description of counter')
+
+
+
 # Loads confirmation email template from file
 env = Environment(
     loader=FileSystemLoader('templates'),
@@ -64,6 +69,7 @@ class EmailService(BaseEmailService):
 
   @staticmethod
   def send_email(client, email_address, content):
+    c.inc()
     response = client.send_message(
       sender = client.sender_path(project_id, region, sender_id),
       envelope_from_authority = '',
@@ -163,6 +169,8 @@ def initStackdriverProfiling():
 
 if __name__ == '__main__':
   logger.info('starting the email service in dummy mode.')
+  start_http_server(8000)
+
 
   # Profiler
   try:
