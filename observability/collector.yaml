@@ -16,6 +16,8 @@ data:
   relay: |
     exporters:
       debug: {}
+      otlphttp:
+        endpoint: http://loki:3100/otlp
     extensions:
       health_check:
         endpoint: ${env:MY_POD_IP}:13133
@@ -148,6 +150,7 @@ data:
         logs:
           exporters:
           - debug
+          - otlphttp
           processors:
           - k8sattributes
           - memory_limiter

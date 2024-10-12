@@ -55,7 +55,10 @@ manifests:
     paths:
     - kubernetes-manifests
   rawYaml:
-    - ./collector/collector.yaml
+    - ./observability/collector.yaml
+    - ./observability/loki.yaml
+    - ./observability/grafana.yaml
+
 deploy:
   kubectl: {}
 # "gcb" profile allows building and pushing the images
