@@ -144,5 +144,7 @@ zipp==3.17.0
 
 prometheus_client
 
+pyroscope-io
+
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools

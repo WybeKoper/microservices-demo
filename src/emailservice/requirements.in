@@ -9,3 +9,5 @@ requests==2.32.2
 opentelemetry-distro==0.41b0
 opentelemetry-instrumentation-grpc==0.48b0
 opentelemetry-exporter-otlp-proto-grpc==1.27.0
+pyroscope-io
+

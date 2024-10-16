@@ -263,32 +263,3 @@ data:
       code=$(wget --server-response --spider --timeout 90 --tries 10 ${url} 2>&1 | awk '/^  HTTP/{print $2}')
       [ "$code" == "200" ]
     }
----
-# Source: grafana/templates/tests/test.yaml
-apiVersion: v1
-kind: Pod
-metadata:
-  name: my-grafana-test
-  labels:
-    app.kubernetes.io/name: grafana
-    app.kubernetes.io/instance: my-grafana
-  annotations:
-    "helm.sh/hook": test
-    "helm.sh/hook-delete-policy": "before-hook-creation,hook-succeeded"
-  namespace: default
-spec:
-  serviceAccountName: my-grafana-test
-  containers:
-    - name: my-grafana-test
-      image: "docker.io/bats/bats:v1.4.1"
-      imagePullPolicy: "IfNotPresent"
-      command: ["/opt/bats/bin/bats", "-t", "/tests/run.sh"]
-      volumeMounts:
-        - mountPath: /tests
-          name: tests
-          readOnly: true
-  volumes:
-    - name: tests
-      configMap:
-        name: my-grafana-test
-  restartPolicy: Never

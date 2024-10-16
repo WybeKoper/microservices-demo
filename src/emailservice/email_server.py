@@ -44,6 +44,10 @@ logger = getJSONLogger('emailservice-server')
 from prometheus_client import start_http_server, Counter
 c = Counter('my_failures', 'Description of counter')
 
+import pyroscope
+
+
+
 
 
 # Loads confirmation email template from file
@@ -171,6 +175,14 @@ if __name__ == '__main__':
   logger.info('starting the email service in dummy mode.')
   start_http_server(8000)
 
+  pyroscope.configure(
+    application_name = "my.python.app", # replace this with some name for your application
+    server_address   = "http://pyroscope.default.svc.cluster.local.:4040", # replace this with the address of your Pyroscope server
+    enable_logging      = True, # does enable logging facility; default is False
+    tags                = {
+          "region": 'wybe',
+      }
+  )
 
   # Profiler
   try:
