@@ -18,6 +18,8 @@ data:
       debug: {}
       otlphttp:
         endpoint: http://loki:3100/otlp
+      otlp:
+        endpoint: http://tempo-distributor:3100
     extensions:
       health_check:
         endpoint: ${env:MY_POD_IP}:13133
@@ -147,6 +149,10 @@ data:
       extensions:
       - health_check
       pipelines:
+        traces:
+          receivers: [otlp]
+          processors: [batch]
+          exporters: [otlp]
         logs:
           exporters:
           - debug

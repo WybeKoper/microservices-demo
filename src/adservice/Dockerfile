@@ -37,5 +37,13 @@ FROM eclipse-temurin:21.0.4_7-jre-alpine@sha256:8cc1202a100e72f6e91bf05ab274b373
 WORKDIR /app
 COPY --from=builder /app .
 
+ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.8.0/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
+RUN chmod 777 /app/opentelemetry-javaagent.jar
+ENV JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
+ENV OTEL_SERVICE_NAME=ad-service
+ENV OTEL_TRACES_EXPORTER=otlp
+ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=ENTER_ENDPOINT_HERE
+
+
 EXPOSE 9555
 ENTRYPOINT ["/app/build/install/hipstershop/bin/AdService"]
