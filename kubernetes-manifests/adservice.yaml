@@ -49,6 +49,12 @@ spec:
         env:
         - name: PORT
           value: "9555"
+        - name: NODE_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.hostIP
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          value: http://$(NODE_IP):4318/v1/traces
         resources:
           requests:
             cpu: 200m

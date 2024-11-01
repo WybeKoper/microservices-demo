@@ -40,9 +40,12 @@ COPY --from=builder /app .
 ADD https://github.com/open-telemetry/opentelemetry-java-instrumentation/releases/download/v2.8.0/opentelemetry-javaagent.jar /app/opentelemetry-javaagent.jar
 RUN chmod 777 /app/opentelemetry-javaagent.jar
 ENV JAVA_TOOL_OPTIONS=-javaagent:/app/opentelemetry-javaagent.jar
-ENV OTEL_SERVICE_NAME=ad-service
+# ENV OTEL_JAVAAGENT_DEBUG=true
+ENV OTEL_SERVICE_NAME=adservice
 ENV OTEL_TRACES_EXPORTER=otlp
-ENV OTEL_EXPORTER_OTLP_TRACES_ENDPOINT=ENTER_ENDPOINT_HERE
+ENV OTEL_EXPORTER_OTLP_TRACES_PROTOCOL=http/protobuf
+ENV OTEL_LOGS_EXPORTER=none
+ENV OTEL_METRICS_EXPORTER=none
 
 
 EXPOSE 9555

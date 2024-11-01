@@ -18,8 +18,10 @@ data:
       debug: {}
       otlphttp:
         endpoint: http://loki:3100/otlp
-      otlp:
-        endpoint: http://tempo-distributor:3100
+      otlp/tempo:
+        endpoint: http://tempo-distributor:4317
+        tls:
+          insecure: true
     extensions:
       health_check:
         endpoint: ${env:MY_POD_IP}:13133
@@ -141,8 +143,6 @@ data:
         endpoint: ${env:K8S_NODE_NAME}:10250
       otlp:
         protocols:
-          grpc:
-            endpoint: ${env:MY_POD_IP}:4317
           http:
             endpoint: ${env:MY_POD_IP}:4318
     service:
@@ -152,7 +152,7 @@ data:
         traces:
           receivers: [otlp]
           processors: [batch]
-          exporters: [otlp]
+          exporters: [debug, otlp/tempo]
         logs:
           exporters:
           - debug

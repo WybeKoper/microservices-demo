@@ -98,7 +98,13 @@ data:
         kvstore:
           store: memberlist
     distributor:
-      receivers: null
+      receivers:
+        otlp:
+          protocols:
+            grpc:
+              endpoint: 0.0.0.0:4317
+            http:
+              endpoint: 0.0.0.0:4318
       ring:
         kvstore:
           store: memberlist
@@ -222,6 +228,18 @@ spec:
     - name: http-metrics
       port: 3100
       targetPort: http-metrics
+    - name: distributor-otlp-http
+      port: 4318
+      protocol: TCP
+      targetPort: otlp-http
+    - name: grpc-distributor-otlp
+      port: 4317
+      protocol: TCP
+      targetPort: grpc-otlp
+    - name: distributor-otlp-legacy
+      port: 55680
+      protocol: TCP
+      targetPort: grpc-otlp
   selector:
     app.kubernetes.io/name: tempo
     app.kubernetes.io/instance: tempo
@@ -250,6 +268,18 @@ spec:
       port: 9095
       protocol: TCP
       targetPort: 9095
+    - name: distributor-otlp-http
+      port: 4318
+      protocol: TCP
+      targetPort: otlp-http
+    - name: grpc-distributor-otlp
+      port: 4317
+      protocol: TCP
+      targetPort: grpc-otlp
+    - name: distributor-otlp-legacy
+      port: 55680
+      protocol: TCP
+      targetPort: grpc-otlp
   selector:
     app.kubernetes.io/name: tempo
     app.kubernetes.io/instance: tempo
@@ -495,7 +525,7 @@ spec:
         app.kubernetes.io/component: compactor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 389b3ca71fc40efd57e35f7e9e29c0ce983d9274477352ad12414e5c1bf9805d
+        checksum/config: 07f10b6def31da2de68b656cef0bb478832f0d94704b02721a5432b8fe3102b5
     spec:
       serviceAccountName: tempo
       securityContext:
@@ -584,7 +614,7 @@ spec:
         app.kubernetes.io/component: distributor
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 389b3ca71fc40efd57e35f7e9e29c0ce983d9274477352ad12414e5c1bf9805d
+        checksum/config: 07f10b6def31da2de68b656cef0bb478832f0d94704b02721a5432b8fe3102b5
     spec:
       serviceAccountName: tempo
       securityContext:
@@ -605,6 +635,12 @@ spec:
               protocol: TCP
             - containerPort: 3100
               name: http-metrics
+            - containerPort: 4318
+              name: otlp-http
+              protocol: TCP
+            - containerPort: 4317
+              name: grpc-otlp
+              protocol: TCP
           readinessProbe:
             httpGet:
               path: /ready
@@ -713,7 +749,7 @@ spec:
         app.kubernetes.io/component: querier
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 389b3ca71fc40efd57e35f7e9e29c0ce983d9274477352ad12414e5c1bf9805d
+        checksum/config: 07f10b6def31da2de68b656cef0bb478832f0d94704b02721a5432b8fe3102b5
     spec:
       serviceAccountName: tempo
       securityContext:
@@ -840,7 +876,7 @@ spec:
         app.kubernetes.io/managed-by: Helm
         app.kubernetes.io/component: query-frontend
       annotations:
-        checksum/config: 389b3ca71fc40efd57e35f7e9e29c0ce983d9274477352ad12414e5c1bf9805d
+        checksum/config: 07f10b6def31da2de68b656cef0bb478832f0d94704b02721a5432b8fe3102b5
     spec:
       serviceAccountName: tempo
       securityContext:
@@ -961,7 +997,7 @@ spec:
         app.kubernetes.io/component: ingester
         app.kubernetes.io/part-of: memberlist
       annotations:
-        checksum/config: 389b3ca71fc40efd57e35f7e9e29c0ce983d9274477352ad12414e5c1bf9805d
+        checksum/config: 07f10b6def31da2de68b656cef0bb478832f0d94704b02721a5432b8fe3102b5
     spec:
       serviceAccountName: tempo
       securityContext:
