@@ -24,7 +24,9 @@ RUN apt-get -qq update \
 
 # get packages
 COPY requirements.txt .
-RUN pip install -r requirements.txt
+RUN pip install --prefix="/reqs" -r requirements.txt
+
+
 
 FROM base
 # Enable unbuffered logging
@@ -36,6 +38,8 @@ RUN apt-get update && apt-get upgrade && apt-get install -y curl
 
 
 WORKDIR /email_server
+COPY --from=builder /reqs /usr/local
+
 
 # Grab packages from builder
 # COPY --from=builder /usr/local/lib/python3.12/ /usr/local/lib/python3.12/
@@ -44,6 +48,10 @@ COPY --from=builder /usr/local/lib/python3.11/ /usr/local/lib/python3.11/
 # Add the application
 COPY . .
 
+RUN opentelemetry-bootstrap -a install
+
+
 EXPOSE 8080
 EXPOSE 8000
-ENTRYPOINT [ "python", "email_server.py" ]
+# CMD ["opentelemetry-instrument", "python", "email_server.py"]
+ENTRYPOINT ["opentelemetry-instrument", "python", "email_server.py" ]
