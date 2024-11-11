@@ -26,6 +26,8 @@ spec:
     metadata:
       labels:
         app: checkoutservice
+      annotations:
+        instrumentation.opentelemetry.io/inject-go: "true"
     spec:
       serviceAccountName: checkoutservice
       securityContext:

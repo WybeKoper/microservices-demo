@@ -48,10 +48,10 @@ COPY --from=builder /usr/local/lib/python3.11/ /usr/local/lib/python3.11/
 # Add the application
 COPY . .
 
-RUN opentelemetry-bootstrap -a install
+# RUN opentelemetry-bootstrap -a install
 
 
 EXPOSE 8080
 EXPOSE 8000
 # CMD ["opentelemetry-instrument", "python", "email_server.py"]
-ENTRYPOINT ["opentelemetry-instrument", "python", "email_server.py" ]
+ENTRYPOINT ["python", "email_server.py" ]

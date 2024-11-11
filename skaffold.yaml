@@ -55,10 +55,10 @@ manifests:
     paths:
     - kubernetes-manifests
   rawYaml:
-    - ./observability/collector.yaml
-    - ./observability/loki.yaml
-    - ./observability/grafana.yaml
-    - ./observability/tempo.yaml
+    # - ./observability/collector.yaml
+    # - ./observability/loki.yaml
+    # - ./observability/grafana.yaml
+    # - ./observability/tempo.yaml
 
 deploy:
   kubectl: {}

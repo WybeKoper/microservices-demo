@@ -26,6 +26,8 @@ spec:
     metadata:
       labels:
         app: adservice
+      annotations:
+        instrumentation.opentelemetry.io/inject-java: "true"
     spec:
       serviceAccountName: adservice
       terminationGracePeriodSeconds: 5
@@ -53,8 +55,8 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: status.hostIP
-        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
-          value: http://$(NODE_IP):4318/v1/traces
+        # - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        #   value: http://$(NODE_IP):4318/v1/traces
         resources:
           requests:
             cpu: 200m
